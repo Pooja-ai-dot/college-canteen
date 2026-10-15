@@ -839,20 +839,59 @@ closeProfileButton.addEventListener("click", closeProfileDrawer);
 profileOverlay.addEventListener("click", closeProfileDrawer);
 
 
+
 /* =========================================
-   MY ORDERS
+   MY ORDERS - PROFILE DRAWER VIEW
 ========================================= */
 
+const profileContentParent = myOrdersSection.parentElement;
+const profileContentNext = myOrdersSection.nextSibling;
+
+const ordersBackButton = document.createElement("button");
+ordersBackButton.type = "button";
+ordersBackButton.textContent = "← Back to Profile";
+ordersBackButton.className = "back-profile-btn";
+ordersBackButton.style.cssText =
+    "display:block; margin:0 0 20px; padding:10px 16px; " +
+    "border:0; border-radius:8px; cursor:pointer; " +
+    "font-size:15px; font-weight:600;";
+
+let profileChildrenState = [];
+
 profileOrdersBtn.addEventListener("click", async () => {
-    closeProfileDrawer();
+    // Hide profile content inside the drawer, but keep its close button.
+    profileChildrenState = Array.from(profileDrawer.children).map(element => ({
+        element,
+        display: element.style.display
+    }));
 
-    myOrdersSection.style.display = "block";
-    myOrdersList.textContent = "Loading your orders...";
-
-    myOrdersSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
+    profileChildrenState.forEach(({ element }) => {
+        if (
+            !element.contains(closeProfileButton) &&
+            element !== myOrdersSection
+        ) {
+            element.style.display = "none";
+        }
     });
+
+    // Show My Orders inside the same profile drawer.
+    myOrdersSection.style.display = "block";
+    myOrdersSection.style.width = "100%";
+    myOrdersSection.style.maxWidth = "100%";
+    myOrdersSection.style.margin = "0";
+    myOrdersSection.style.padding = "0";
+    myOrdersSection.style.boxSizing = "border-box";
+
+    if (myOrdersSection.parentElement !== profileDrawer) {
+        profileDrawer.appendChild(myOrdersSection);
+    }
+
+    ordersBackButton.style.background = "#f1f1f1";
+    ordersBackButton.style.color = "#222";
+
+    myOrdersSection.prepend(ordersBackButton);
+
+    myOrdersList.textContent = "Loading your orders...";
 
     try {
         const response = await fetch("/api/my-orders", {
@@ -868,7 +907,8 @@ profileOrdersBtn.addEventListener("click", async () => {
         myOrdersList.replaceChildren();
 
         if (!Array.isArray(data.orders) || data.orders.length === 0) {
-            myOrdersList.textContent = "You haven't placed any orders yet.";
+            myOrdersList.textContent =
+                "You haven't placed any orders yet.";
             return;
         }
 
@@ -880,14 +920,16 @@ profileOrdersBtn.addEventListener("click", async () => {
             heading.textContent = "Order #" + order.order_id;
 
             const status = document.createElement("p");
-            status.textContent = "Status: " + (order.order_status || "Pending");
+            status.textContent =
+                "Status: " + (order.order_status || "Pending");
 
             const pickup = document.createElement("p");
-            pickup.textContent = "Pickup time: " + (order.pickup_time || "-");
+            pickup.textContent =
+                "Pickup time: " + (order.pickup_time || "-");
 
             const total = document.createElement("p");
-            total.textContent = "Total: " +
-                formatPrice(order.total_amount || 0);
+            total.textContent =
+                "Total: " + formatPrice(order.total_amount || 0);
 
             card.append(heading, status, pickup, total);
 
@@ -899,11 +941,9 @@ profileOrdersBtn.addEventListener("click", async () => {
 
                 order.items.forEach(item => {
                     const li = document.createElement("li");
-
                     li.textContent =
                         (item.item_name || item.name || "Food item") +
                         " × " + item.quantity;
-
                     itemsList.appendChild(li);
                 });
 
@@ -919,11 +959,127 @@ profileOrdersBtn.addEventListener("click", async () => {
     }
 });
 
-backProfileBtn.addEventListener("click", () => {
+ordersBackButton.addEventListener("click", () => {
+    // Move My Orders back to its original HTML location.
+    if (profileContentNext && profileContentNext.parentNode === profileContentParent) {
+        profileContentParent.insertBefore(myOrdersSection, profileContentNext);
+    } else {
+        profileContentParent.appendChild(myOrdersSection);
+    }
+
     myOrdersSection.style.display = "none";
-    openProfileDrawer();
+
+    // Restore the profile drawer content.
+    profileChildrenState.forEach(({ element, display }) => {
+        element.style.display = display;
+    });
+
+    ordersBackButton.remove();
 });
 
+/* =========================================
+   SEARCH ORDER BY ORDER ID
+========================================= */
+
+const findOrderButton = document.getElementById("find-order-btn");
+const orderIdInput = document.getElementById("orderId");
+const historyMessage = document.getElementById("history-message");
+const historyResult = document.getElementById("history-result");
+
+findOrderButton.addEventListener("click", async () => {
+    const orderId = orderIdInput.value.trim();
+
+    historyResult.replaceChildren();
+
+    if (!orderId || Number(orderId) < 1) {
+        historyMessage.textContent = "Please enter a valid Order ID.";
+        return;
+    }
+
+    historyMessage.textContent = "Searching for your order...";
+    findOrderButton.disabled = true;
+
+    try {
+        const response = await fetch(
+            "/api/orders/" + encodeURIComponent(orderId),
+            { credentials: "same-origin" }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Order not found.");
+        }
+
+        if (!data.order) {
+            throw new Error("Order details were not found.");
+        }
+
+        historyMessage.textContent = "";
+
+        const panel = document.createElement("div");
+        panel.className = "order-history-card";
+
+        function addText(parent, text, tag = "p") {
+            const element = document.createElement(tag);
+            element.textContent = text;
+            parent.appendChild(element);
+        }
+
+        addText(panel, "Order #" + data.order.order_id, "h3");
+        addText(panel, "Status: " + (data.order.order_status || "Pending"));
+        addText(
+            panel,
+            "Pickup time: " + (data.order.pickup_time || "Not set")
+        );
+        addText(
+            panel,
+            "Total: ₹" + Number(data.order.total_amount || 0).toFixed(2)
+        );
+
+        addText(panel, "Food Items", "h4");
+
+        const list = document.createElement("ul");
+
+        (Array.isArray(data.items) ? data.items : []).forEach(item => {
+            const li = document.createElement("li");
+            li.textContent =
+                (item.item_name || item.name || "Food item") +
+                " × " + item.quantity +
+                " — ₹" + Number(item.item_total || 0).toFixed(2);
+
+            list.appendChild(li);
+        });
+
+        panel.appendChild(list);
+        addText(panel, "Payment Details", "h4");
+
+        const transactions = Array.isArray(data.transactions)
+            ? data.transactions
+            : [];
+
+        if (transactions.length === 0) {
+            addText(panel, "No transaction record found.");
+        } else {
+            transactions.forEach(transaction => {
+                addText(
+                    panel,
+                    (transaction.payment_method || "Payment") +
+                    " — " + (transaction.payment_status || "Unknown") +
+                    " — ₹" + Number(transaction.amount || 0).toFixed(2)
+                );
+            });
+        }
+
+        historyResult.appendChild(panel);
+
+    } catch (error) {
+        console.error("Order search error:", error);
+        historyMessage.textContent = error.message;
+    } finally {
+        findOrderButton.disabled = false;
+    }
+});
 
 /* =========================================
    LOGOUT

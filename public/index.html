@@ -239,20 +239,28 @@
         </div>
     </div>
 
-    <!-- MY ORDERS -->
-    <section id="my-orders-section" style="display: none;">
+  
+<!-- MY ORDERS -->
+<section id="my-orders-section" style="display: none;">
 
-        <h2>My Orders</h2>
+    <button id="back-profile-btn" type="button" class="back-profile-btn">
+        ← Back to Profile
+    </button>
 
-        <div id="my-orders-list">
-            Loading orders...
-        </div>
+    <h2>My Order History</h2>
 
-        <button id="back-profile-btn" type="button">
-            Back to Profile
-        </button>
+    <div class="panel">
+        <label for="orderId">Enter your Order ID:</label>
+        <br>
+        <input id="orderId" type="number" min="1" required>
+        <button id="find-order-btn" type="button">Find Order</button>
+        <p id="history-message" role="status"></p>
+    </div>
 
-    </section>
+    <div id="history-result"></div>
+
+</section>
+
 
     <!-- PROFILE OVERLAY -->
     <div id="profile-overlay" class="profile-overlay"></div>
