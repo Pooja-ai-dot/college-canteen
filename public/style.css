@@ -1240,3 +1240,24 @@ footer p {
 #find-order-btn:active {
     transform: translateY(0);
 }
+/* SEARCH FOOD */
+.search-food-section {
+    padding: 20px 5%;
+    text-align: center;
+}
+
+#food-search {
+    width: 100%;
+    max-width: 500px;
+    padding: 14px 20px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+#food-search:focus {
+    border-color: #ff6b35;
+    box-shadow: 0 0 5px rgba(255, 107, 53, 0.3);
+}
