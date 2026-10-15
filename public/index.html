@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,8 +11,15 @@
 <body>
 
     <!-- HEADER -->
+
+    <!-- HEADER -->
     <header class="navbar">
-        <a class="logo" href="/">Campus Bites<span>.</span></a>
+        <a class="logo" href="/">
+
+            <img src="/images/clglogo.jpg" alt="College Logo" class="college-logo">
+
+            Campus Bites<span>.</span>
+        </a>
 
         <nav>
             <a href="#home">Home</a>
@@ -24,14 +30,11 @@
             🛒 Cart (<span id="cart-count">0</span>)
         </a>
 
-        <button
-            type="button"
-            id="login-open-btn"
-            aria-label="My Account"
-            title="My Account">
+        <button type="button" id="login-open-btn" aria-label="My Account" title="My Account">
             👤
         </button>
     </header>
+
 
     <!-- MAIN CONTENT -->
     <main>
@@ -91,7 +94,8 @@
                 <button type="button" class="category-btn" data-category="Rolls & Wraps">Rolls & Wraps</button>
                 <button type="button" class="category-btn" data-category="Shakes & Drinks">Shakes & Drinks</button>
                 <button type="button" class="category-btn" data-category="Rice Bowl">Rice Bowl</button>
-                <button type="button" class="category-btn" data-category="Student's Favourite">Student's Favourite</button>
+                <button type="button" class="category-btn" data-category="Student's Favourite">Student's
+                    Favourite</button>
                 <button type="button" class="category-btn" data-category="Top Sellers">Top Sellers</button>
             </div>
 
@@ -123,15 +127,7 @@
                     Choose Pickup Time
                 </label>
 
-                <input
-                    type="time"
-                    id="pickup-time"
-                    name="pickup-time"
-                    min="08:30"
-                    max="17:30"
-                    step="300"
-                    required
-                >
+                <input type="time" id="pickup-time" name="pickup-time" min="08:30" max="17:30" step="300" required>
 
                 <small>
                     Pickup available from 8:30 AM to 5:30 PM.
@@ -144,11 +140,7 @@
                     Choose Payment Method
                 </label>
 
-                <select
-                    id="payment-method"
-                    name="payment-method"
-                    required
-                >
+                <select id="payment-method" name="payment-method" required>
                     <option value="">Select a payment method</option>
                     <option value="Cash">Cash at Canteen</option>
                     <option value="UPI">UPI</option>
@@ -156,12 +148,7 @@
             </div>
 
             <!-- CHECKOUT BUTTON -->
-            <button
-                id="checkout-btn"
-                class="primary-btn"
-                type="button"
-                disabled
-            >
+            <button id="checkout-btn" class="primary-btn" type="button" disabled>
                 Checkout
             </button>
 
@@ -199,11 +186,7 @@
                 <strong id="success-order-total">₹0.00</strong>
             </p>
 
-            <button
-                id="close-order-modal"
-                class="primary-btn"
-                type="button"
-            >
+            <button id="close-order-modal" class="primary-btn" type="button">
                 Continue Exploring
             </button>
 
@@ -214,12 +197,7 @@
     <div id="auth-modal" class="auth-modal" style="display: none;">
         <div class="auth-box">
 
-            <button
-                type="button"
-                id="auth-close-btn"
-                class="auth-close"
-                aria-label="Close login popup"
-            >
+            <button type="button" id="auth-close-btn" class="auth-close" aria-label="Close login popup">
                 &times;
             </button>
 
@@ -232,28 +210,13 @@
             <form id="auth-form">
 
                 <div id="name-field" style="display: none;">
-                    <input
-                        type="text"
-                        id="auth-name"
-                        placeholder="Your full name"
-                        maxlength="100"
-                    >
+                    <input type="text" id="auth-name" placeholder="Your full name" maxlength="100">
                 </div>
 
-                <input
-                    type="text"
-                    id="auth-identifier"
-                    placeholder="Mobile number or email"
-                    required
-                >
+                <input type="text" id="auth-identifier" placeholder="Mobile number or email" required>
 
-                <input
-                    type="password"
-                    id="auth-password"
-                    placeholder="Password (minimum 8 characters)"
-                    minlength="8"
-                    required
-                >
+                <input type="password" id="auth-password" placeholder="Password (minimum 8 characters)" minlength="8"
+                    required>
 
                 <button type="submit" id="auth-submit-btn">
                     Login
@@ -297,12 +260,7 @@
     <!-- PROFILE DRAWER -->
     <div id="profile-drawer" class="profile-drawer">
 
-        <button
-            id="close-profile"
-            class="close-profile"
-            type="button"
-            aria-label="Close profile"
-        >
+        <button id="close-profile" class="close-profile" type="button" aria-label="Close profile">
             &times;
         </button>
 
@@ -339,4 +297,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>

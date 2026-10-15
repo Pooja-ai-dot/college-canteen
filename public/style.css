@@ -1077,3 +1077,37 @@ footer p {
         animation-duration: 0.01ms !important;
     }
 }
+
+/* College Logo */
+.college-logo {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Fix navigation between Home, Menu and Cart */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+#home,
+#menu,
+#cart {
+    scroll-margin-top: 90px;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+

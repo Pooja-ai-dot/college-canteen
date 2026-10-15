@@ -562,23 +562,89 @@ closeOrderModal.addEventListener("click", () => {
    CART NAVIGATION
 ========================================= */
 
-if (cartLink && cartSection) {
-    cartLink.addEventListener("click", event => {
-        event.preventDefault();
 
-        document.querySelectorAll("main > section").forEach(section => {
-            section.style.display = "none";
-        });
+/* =========================================
+   CART AND HOME/MENU NAVIGATION FIX
+========================================= */
 
-        cartSection.style.display = "";
-        cartSection.classList.add("cart-page-active");
+const homeLink = document.querySelector('a[href="#home"]');
+const menuLink = document.querySelector('a[href="#menu"]');
 
-        cartSection.scrollIntoView({
+function showWebsiteSection(target) {
+    const sections = document.querySelectorAll("main > section");
+
+    // Hide all main sections first
+    sections.forEach(section => {
+        section.style.display = "none";
+    });
+
+    // Remove cart page mode
+    if (cartSection) {
+        cartSection.classList.remove("cart-page-active");
+        cartSection.style.display = "none";
+    }
+
+    // Show the requested section
+    if (target === "cart") {
+        if (cartSection) {
+            cartSection.style.display = "block";
+            cartSection.classList.add("cart-page-active");
+        }
+    } else {
+        const targetSection = document.getElementById(target);
+
+        if (targetSection) {
+            targetSection.style.display = "";
+        }
+    }
+
+    // Scroll to the selected section
+    const sectionToScroll = document.getElementById(target);
+
+    if (sectionToScroll) {
+        sectionToScroll.scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
+    }
+}
+
+// Cart button
+if (cartLink) {
+    cartLink.addEventListener("click", event => {
+        event.preventDefault();
+        showWebsiteSection("cart");
+        history.replaceState(null, "", "#cart");
     });
 }
+
+// Home button
+if (homeLink) {
+    homeLink.addEventListener("click", event => {
+        event.preventDefault();
+        showWebsiteSection("home");
+        history.replaceState(null, "", "#home");
+    });
+}
+
+// Food Menu button
+if (menuLink) {
+    menuLink.addEventListener("click", event => {
+        event.preventDefault();
+        showWebsiteSection("menu");
+        history.replaceState(null, "", "#menu");
+    });
+}
+
+// Open the correct section when the page loads
+window.addEventListener("load", () => {
+    const target = window.location.hash.replace("#", "");
+
+    if (["home", "menu", "cart"].includes(target)) {
+        showWebsiteSection(target);
+    }
+});
+
 
 
 /* =========================================

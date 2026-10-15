@@ -875,7 +875,6 @@ app.patch("/api/admin/transactions/:id/status", requireAdmin, async (req, res) =
         });
     }
 });
-
 /* View customers: never return password hashes */
 app.get("/api/admin/customers", requireAdmin, async (req, res) => {
     try {
@@ -893,14 +892,9 @@ app.get("/api/admin/customers", requireAdmin, async (req, res) => {
         });
     }
 });
-
-
 // Start server
-
 app.listen(PORT, "0.0.0.0", () => {
     console.log(
         "College Canteen server running on port " + PORT
     );
 });
-
-
