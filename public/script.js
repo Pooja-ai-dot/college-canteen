@@ -1,9 +1,3 @@
-
-
-/* =========================================
-   CAMPUS BITES - MAIN ELEMENTS
-========================================= */
-
 const foodList = document.getElementById("food-list");
 const cartItemsElement = document.getElementById("cart-items");
 const cartCountElement = document.getElementById("cart-count");
@@ -49,6 +43,8 @@ const cartLink = document.querySelector(".cart-link");
 const cartSection = document.getElementById("cart");
 
 
+const foodSearchInput = document.getElementById("food-search");
+const clearFoodSearchButton = document.getElementById("clear-food-search");
 /* =========================================
    STATE
 ========================================= */
@@ -176,11 +172,6 @@ function getFoodImage(food) {
     return "images/food.jpg";
 }
 
-
-/* =========================================
-   SAFE HTML HELPERS
-========================================= */
-
 function escapeHTML(value) {
     return String(value).replace(/[&<>"']/g, character => ({
         "&": "&amp;",
@@ -232,6 +223,7 @@ async function loadFoods() {
    DISPLAY FOOD MENU
 ========================================= */
 
+
 function displayFoods() {
     if (!foods.length) {
         foodList.innerHTML =
@@ -252,19 +244,34 @@ function displayFoods() {
         ...(aliases[selected] || [])
     ].map(normalizeCategory);
 
-    const filteredFoods = selectedCategory === "All"
-        ? foods
-        : foods.filter(food => {
-            const category = normalizeCategory(
-                food.category || food.category_name
-            );
+    const searchText = foodSearchInput
+        ? foodSearchInput.value.trim().toLowerCase()
+        : "";
 
-            return allowedCategories.includes(category);
-        });
+    const filteredFoods = foods.filter(food => {
+        const category = normalizeCategory(
+            food.category || food.category_name || ""
+        );
+
+        const name = (
+            getFoodName(food) || ""
+        ).toLowerCase();
+
+        const matchesCategory =
+            selectedCategory === "All" ||
+            allowedCategories.includes(category);
+
+        const matchesSearch =
+            !searchText ||
+            name.includes(searchText) ||
+            category.includes(searchText);
+
+        return matchesCategory && matchesSearch;
+    });
 
     if (!filteredFoods.length) {
         foodList.innerHTML =
-            '<p class="status-message">No items found in this category.</p>';
+            '<p class="status-message">No matching food found. Try another search.</p>';
         return;
     }
 
@@ -309,7 +316,55 @@ function displayFoods() {
     });
 }
 
+/* SEARCH FOOD AS USER TYPES */
+if (foodSearchInput) {
+    foodSearchInput.addEventListener("input", () => {
+        displayFoods();
 
+        if (clearFoodSearchButton) {
+            clearFoodSearchButton.style.display =
+                foodSearchInput.value ? "block" : "none";
+        }
+    });
+}
+
+/* CLEAR SEARCH */
+if (clearFoodSearchButton && foodSearchInput) {
+    clearFoodSearchButton.addEventListener("click", () => {
+        foodSearchInput.value = "";
+        clearFoodSearchButton.style.display = "none";
+        displayFoods();
+        foodSearchInput.focus();
+    });
+}
+
+/* ROTATING SEARCH EXAMPLES */
+const searchExamples = [
+    "Search for tea...",
+    "Search for coffee...",
+    "Search for burger...",
+    "Search for sandwich...",
+    "Search for fries..."
+];
+
+let searchExampleIndex = 0;
+
+if (foodSearchInput) {
+    foodSearchInput.placeholder = searchExamples[0];
+
+    setInterval(() => {
+        if (
+            document.activeElement !== foodSearchInput &&
+            foodSearchInput.value === ""
+        ) {
+            searchExampleIndex =
+                (searchExampleIndex + 1) % searchExamples.length;
+
+            foodSearchInput.placeholder =
+                searchExamples[searchExampleIndex];
+        }
+    }, 2500);
+}
 /* =========================================
    CATEGORY FILTER
 ========================================= */
