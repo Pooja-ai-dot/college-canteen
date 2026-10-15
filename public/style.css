@@ -1219,3 +1219,24 @@ footer p {
     gap: 8px;
 }
 
+/* FIND ORDER BUTTON */
+#find-order-btn {
+    background: #ff6b35;
+    color: #ffffff;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#find-order-btn:hover {
+    background: #e65320;
+    transform: translateY(-2px);
+}
+
+#find-order-btn:active {
+    transform: translateY(0);
+}
