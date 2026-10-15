@@ -884,11 +884,70 @@ footer p {
     background: #fff1f1;
 }
 
+
+
 /* 16. MY ORDERS */
 #my-orders-section {
-    width: 86%;
-    max-width: 900px;
-    margin: 30px auto;
+    display: none;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.profile-drawer #my-orders-section {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.profile-drawer #my-orders-section h2 {
+    margin-top: 12px;
+    font-size: 24px;
+    overflow-wrap: anywhere;
+}
+
+.profile-drawer #my-orders-section .panel {
+    width: 100%;
+    max-width: 100%;
+    margin: 16px 0;
+    box-sizing: border-box;
+}
+
+.profile-drawer #my-orders-section input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 8px 0;
+}
+
+.profile-drawer #my-orders-section .order-history-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 14px 0;
+    padding: 14px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+}
+
+.profile-drawer #my-orders-section .back-profile-btn {
+    display: block;
+    width: 100%;
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 8px;
+    background: #f1f1f1;
+    color: #222;
+    cursor: pointer;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 600;
 }
 
 /* 17. TABLET */
@@ -1091,23 +1150,5 @@ footer p {
     display: flex;
     align-items: center;
     gap: 8px;
-}
-
-/* Fix navigation between Home, Menu and Cart */
-html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 90px;
-}
-
-#home,
-#menu,
-#cart {
-    scroll-margin-top: 90px;
-}
-
-.navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
 }
 

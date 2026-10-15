@@ -884,6 +884,7 @@ profileOrdersBtn.addEventListener("click", async () => {
 
     if (myOrdersSection.parentElement !== profileDrawer) {
         profileDrawer.appendChild(myOrdersSection);
+        profileDrawer.scrollTop = 0;
     }
 
     ordersBackButton.style.background = "#f1f1f1";
