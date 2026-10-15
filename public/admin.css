@@ -1,0 +1,100 @@
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: #f5f6f8;
+            font-family: Arial, sans-serif;
+            color: #222;
+        }
+        header {
+            background: #e85d2a;;
+            color: white;
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+        main { max-width: 1200px; margin: auto; padding: 20px; }
+        nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        button {
+            border: 0;
+            padding: 10px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+        nav button, .primary { background: #e85d2a;; color: white; }
+        .danger { background: #fee2e2; color: #991b1b; }
+        .panel, .stat {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px #0000000a;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+        .stat strong { display: block; font-size: 25px; margin-top: 8px; }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 650px; }
+        th, td { padding: 11px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f0fdf4; }
+        input, select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin: 4px;
+            max-width: 100%;
+        }
+        .hidden { display: none; }
+        #message { white-space: pre-wrap; }
+        @media (max-width: 600px) {
+            header { padding: 14px; }
+            main { padding: 12px; }
+        }
+
+button {
+    background-color: var(--primary);
+    color: white;
+    transition: background-color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(232, 93, 42, 0.25);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+button,
+.btn-primary {
+    background-color: #e85d2a;
+    color: #ffffff;
+    border: none;
+    transition: background-color 0.3s ease,
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+button:hover,
+.btn-primary:hover {
+    background-color: #c9471c !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(232, 93, 42, 0.25);
+}
+
+button:active,
+.btn-primary:active {
+    background-color: #a93816 !important;
+    transform: translateY(0);
+}

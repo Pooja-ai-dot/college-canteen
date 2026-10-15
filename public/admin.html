@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="/admin.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Bites | Admin Dashboard</title>
+</head>
+<body>
+    <header>
+        <div>
+            <strong>Campus Bites.</strong>
+            <div>Admin Dashboard</div>
+        </div>
+        <button id="logout-button">Logout</button>
+    </header>
+
+    <main>
+        <p id="message" role="status"></p>
+
+        <nav>
+            <button data-section="overview">Overview</button>
+            <button data-section="orders">Orders</button>
+            <button data-section="menu">Food Menu</button>
+            <button data-section="transactions">Transactions</button>
+            <button data-section="customers">Customers</button>
+        </nav>
+
+        <section id="overview" class="section">
+            <h2>Dashboard Overview</h2>
+            <div class="stats">
+                <div class="stat">Total Orders<strong id="total-orders">—</strong></div>
+                <div class="stat">Menu Items<strong id="total-foods">—</strong></div>
+                <div class="stat">Customers<strong id="total-customers">—</strong></div>
+                <div class="stat">Payments Marked Paid<strong id="total-payments">—</strong></div>
+            </div>
+        </section>
+
+        <section id="orders" class="section hidden">
+            <h2>All Orders</h2>
+            <div class="panel table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Order</th><th>Customer</th><th>Total</th><th>Pickup</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="orders-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="menu" class="section hidden">
+            <h2>Manage Food Menu</h2>
+            <form id="food-form" class="panel">
+                <input id="food-name" placeholder="Food name" maxlength="150" required>
+                <input id="food-category" placeholder="Category" maxlength="100" required>
+                <input id="food-price" type="number" min="0" max="1000000" step="0.01" placeholder="Price ₹" required>
+                <button class="primary" type="submit">Add Food</button>
+                <button type="button" id="cancel-edit" class="hidden">Cancel Edit</button>
+                <p id="edit-note"></p>
+            </form>
+            <div class="panel table-wrap">
+                <table>
+                    <thead><tr><th>Food</th><th>Category</th><th>Price</th><th>Actions</th></tr></thead>
+                    <tbody id="menu-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="transactions" class="section hidden">
+            <h2>Transactions</h2>
+            <p>Payment status changes here are manual records, not payment verification.</p>
+            <div class="panel table-wrap">
+                <table>
+                    <thead><tr><th>ID</th><th>Order</th><th>Customer</th><th>Amount</th><th>Method</th><th>Status</th><th>Action</th></tr></thead>
+                    <tbody id="transactions-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="customers" class="section hidden">
+            <h2>Registered Customers</h2>
+            <div class="panel table-wrap">
+                <table>
+                    <thead><tr><th>ID</th><th>Name</th><th>Phone</th><th>Email</th></tr></thead>
+                    <tbody id="customers-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="/admin.js"></script>
+</body>
+</html>

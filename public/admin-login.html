@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Bites | Admin Login</title>
+<link rel="stylesheet" href="/admin-login.css">
+</head>
+
+<body>
+    <main class="login-box">
+        <h1>Campus Bites.</h1>
+        <h2>Admin Login</h2>
+        <form id="admin-login-form">
+            <input id="username" name="username" placeholder="Admin username" autocomplete="username" required>
+            <input id="password" name="password" type="password" placeholder="Admin password"
+                autocomplete="current-password" required>
+            <button type="submit">Login to Dashboard</button>
+        </form>
+        <p id="message" role="status"></p>
+        <a href="/">Back to website</a>
+    </main>
+
+    <script>
+        // If already logged in as admin, open the dashboard.
+        fetch("/api/admin/me")
+            .then(response => {
+                if (response.ok) {
+                    window.location.replace("/admin.html");
+                }
+            })
+            .catch(() => { });
+
+        document.getElementById("admin-login-form")
+            .addEventListener("submit", async event => {
+                event.preventDefault();
+
+                const message = document.getElementById("message");
+                message.textContent = "Logging in...";
+
+                try {
+                    const response = await fetch("/api/admin/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        credentials: "same-origin",
+                        body: JSON.stringify({
+                            username: document.getElementById("username").value,
+                            password: document.getElementById("password").value
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || "Login failed.");
+                    }
+
+                    window.location.replace("/admin.html");
+                } catch (error) {
+                    message.textContent =
+                        error.message || "Could not connect to the server.";
+                }
+            });
+    </script>
+</body>
+
+</html>
