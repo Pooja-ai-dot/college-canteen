@@ -1107,30 +1107,7 @@ logoutBtn.addEventListener("click", async () => {
         showToast(error.message);
     }
 });
-/* SEARCH PLACEHOLDER EXAMPLES */
-const foodSearchInput = document.getElementById("food-search");
 
-const searchExamples = [
-    "Search for Tea ☕",
-    "Search for Burger 🍔",
-    "Search for Sandwich 🥪",
-    "Search for Fries 🍟",
-    "Search for Coffee ☕"
-];
-
-let exampleIndex = 0;
-
-if (foodSearchInput) {
-    setInterval(() => {
-        if (
-            document.activeElement !== foodSearchInput &&
-            foodSearchInput.value === ""
-        ) {
-            exampleIndex = (exampleIndex + 1) % searchExamples.length;
-            foodSearchInput.placeholder = searchExamples[exampleIndex];
-        }
-    }, 2000);
-}
 
 /* =========================================
    START WEBSITE
