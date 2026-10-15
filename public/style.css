@@ -950,6 +950,73 @@ footer p {
     font-weight: 600;
 }
 
+.profile-drawer #my-orders-section {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.profile-drawer #my-orders-section h2 {
+    margin: 10px 0 20px;
+    font-size: 25px;
+    color: #252525;
+}
+
+.profile-drawer #my-orders-section .order-history-card {
+    margin: 14px 0;
+    padding: 16px;
+    border: 1px solid #f1e5df;
+    border-radius: 14px;
+    background: #fffaf7;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    overflow-wrap: anywhere;
+}
+
+.profile-drawer #my-orders-section .order-history-card h3 {
+    margin: 0 0 12px;
+    color: var(--primary);
+    font-size: 18px;
+}
+
+.profile-drawer #my-orders-section .order-history-card p {
+    margin: 8px 0;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.profile-drawer #my-orders-section .order-history-card ul {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+
+.profile-drawer #my-orders-section .order-history-card li {
+    margin: 6px 0;
+    color: #333;
+    font-size: 14px;
+}
+
+.profile-drawer #my-orders-section .back-profile-btn {
+    width: 100%;
+    margin: 0 0 16px;
+    padding: 11px 14px;
+    border: none;
+    border-radius: 9px;
+    background: #fff0e8;
+    color: #c94d22;
+    font-size: 14px;
+    font-weight: 650;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.profile-drawer #my-orders-section .back-profile-btn:hover {
+    background: #ffe2d3;
+}
+
 /* 17. TABLET */
 @media (max-width: 900px) {
 
