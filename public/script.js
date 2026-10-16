@@ -43,7 +43,7 @@ const cartLink = document.querySelector(".cart-link");
 const cartSection = document.getElementById("cart");
 
 
-const foodSearchInput = document.getElementById("food-search");
+const foodSearchInput = document.getElementById("food-search-section");
 const clearFoodSearchButton = document.getElementById("clear-food-search");
 /* =========================================
    STATE
@@ -200,8 +200,6 @@ async function loadFoods() {
         }
 
         const data = await response.json();
-
-        // Supports either an array or { foods: [...] }.
         foods = Array.isArray(data)
             ? data
             : Array.isArray(data.foods)

@@ -9,22 +9,17 @@
 </head>
 
 <body>
-
-    <!-- HEADER -->
-
     <!-- HEADER -->
     <header class="navbar">
         <a class="logo" href="/">
-
             <img src="/images/clglogo.jpg" alt="College Logo" class="college-logo">
-
             Campus Bites<span>.</span>
         </a>
 
         <nav>
             <a href="#home">Home</a>
             <a href="#menu">Food Menu</a>
-    <a href="#food-search-section">Search Food</a>
+            <a href="#food-search-section">Search Food</a>
         </nav>
 
         <a class="cart-link" href="#cart">
@@ -62,6 +57,20 @@
                 <span class="food-float food-one">🍕</span>
                 <span class="food-float food-two">🍟</span>
                 <span class="food-float food-three">🥤</span>
+            </div>
+        </section>
+        <!-- Food Search -->
+        <section id="food-search-section" class="food-search-section">
+            <h2>What are you craving today?</h2>
+            <p>Find your favourite food at Campus Bites</p>
+
+            <div class="food-search-box">
+                <span>🔍</span>
+                <input type="text"
+                 id="food-search-section"
+                  placeholder="Search for tea..." 
+                  autocomplete="off">
+                <button type="button" id="clear-food-search" aria-label="Clear search">×</button>
             </div>
         </section>
         <!-- FOOD MENU SECTION -->
@@ -239,22 +248,22 @@
         </div>
     </div>
 
-  
 
-<section id="my-orders-section" style="display: none;">
-    <h2>My Orders</h2>
 
-    <div class="panel">
-        <label for="orderId">Search by Order ID:</label>
-        <input id="orderId" type="number" min="1">
-        <button id="find-order-btn" type="button">Find Order</button>
-        <p id="history-message"></p>
-    </div>
+    <section id="my-orders-section" style="display: none;">
+        <h2>My Orders</h2>
 
-    <div id="history-result"></div>
+        <div class="panel">
+            <label for="orderId">Search by Order ID:</label>
+            <input id="orderId" type="number" min="1">
+            <button id="find-order-btn" type="button">Find Order</button>
+            <p id="history-message"></p>
+        </div>
 
-    <div id="my-orders-list">Loading orders...</div>
-</section>
+        <div id="history-result"></div>
+
+        <div id="my-orders-list">Loading orders...</div>
+    </section>
 
 
 
