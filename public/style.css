@@ -274,32 +274,33 @@ textarea:focus-visible {
     min-height: 100px;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
+    gap: 16px;
 }
 
 .food-card {
+    min-width: 0;
     overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 18px;
+    border-radius: 14px;
     background: var(--surface);
     box-shadow: 0 3px 12px rgba(65, 43, 24, 0.04);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .food-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
     box-shadow: var(--shadow);
 }
 
 .food-image {
     width: 100%;
-    height: 400px;
+    height: 180px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #fff0df, #ffe4cb);
-    font-size: 76px;
+    font-size: 50px;
 }
 
 .food-image img {
@@ -310,40 +311,42 @@ textarea:focus-visible {
 }
 
 .food-info {
-    padding: 20px;
+    padding: 12px;
 }
 
 .food-info h3 {
     margin-bottom: 6px;
-    font-size: 20px;
+    font-size: 16px;
+    line-height: 1.35;
 }
 
-.food-info>p {
-    margin-bottom: 20px;
+.food-info > p {
+    margin-bottom: 12px;
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .food-bottom {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
 }
 
 .food-price {
     color: var(--primary-dark);
-    font-size: 21px;
+    font-size: 17px;
     font-weight: 800;
 }
 
 .add-btn {
-    padding: 9px 16px;
+    padding: 7px 12px;
     border: 1px solid var(--primary);
-    border-radius: 9px;
+    border-radius: 8px;
     background: white;
     color: var(--primary-dark);
     font-weight: 700;
+    cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -362,6 +365,59 @@ textarea:focus-visible {
     text-align: center;
 }
 
+/* TABLET */
+@media (max-width: 768px) {
+    .food-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .food-image {
+        height: 140px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .food-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .food-card {
+        border-radius: 10px;
+    }
+
+    .food-image {
+        height: 105px;
+    }
+
+    .food-info {
+        padding: 8px;
+    }
+
+    .food-info h3 {
+        font-size: 13px;
+    }
+
+    .food-info > p {
+        font-size: 11px;
+        margin-bottom: 8px;
+    }
+
+    .food-price {
+        font-size: 14px;
+    }
+
+    .add-btn {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+
+    .food-bottom {
+        gap: 4px;
+    }
+}
 /* 8. MENU CATEGORY BUTTONS */
 #menu-categories {
     width: 86%;
