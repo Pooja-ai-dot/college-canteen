@@ -1343,3 +1343,35 @@ footer p {
         flex-basis: 100%;
     }
 }
+.food-rating {
+    margin: 8px 0;
+}
+
+.rating-stars {
+    display: inline-flex;
+    gap: 5px;
+}
+
+.rating-stars button {
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-size: 25px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.rating-stars button.active {
+    color: #f5a623;
+}
+
+.rating-summary {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.rating-message {
+    font-size: 13px;
+    margin-top: 5px;
+}

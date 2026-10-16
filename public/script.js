@@ -1187,7 +1187,72 @@ if (foodSearchInput) {
         }
     });
 }
+async function loadFoodRating(foodId) {
+    const response = await fetch(
+        `/api/foods/${foodId}/ratings`
+    );
 
+    if (!response.ok) {
+        throw new Error("Rating load failed");
+    }
+
+    return response.json();
+}
+
+async function submitFoodRating(foodId, rating) {
+    const response = await fetch(
+        `/api/foods/${foodId}/ratings`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ rating })
+        }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        throw new Error(result.message || "Rating failed");
+    }
+
+    return result;
+}
+document.addEventListener("click", async (event) => {
+    const button = event.target.closest(
+        ".rating-stars button"
+    );
+
+    if (!button) return;
+
+    const ratingBox = button.closest(".food-rating");
+    const foodId = Number(ratingBox.dataset.foodId);
+    const rating = Number(button.dataset.rating);
+    const message = ratingBox.querySelector(".rating-message");
+    const summary = ratingBox.querySelector(".rating-summary");
+    const stars = ratingBox.querySelectorAll(".rating-stars button");
+
+    message.textContent = "Submitting rating...";
+
+    try {
+        await submitFoodRating(foodId, rating);
+
+        const data = await loadFoodRating(foodId);
+
+        stars.forEach((star) => {
+            const selected = Number(star.dataset.rating);
+            star.classList.toggle("active", selected <= rating);
+        });
+
+        summary.textContent =
+            `${data.averageRating}/5 · ${data.totalRatings} ratings`;
+
+        message.textContent = "Thank you for rating!";
+    } catch (error) {
+        message.textContent = error.message;
+    }
+});
 
 /* =========================================
    START WEBSITE
