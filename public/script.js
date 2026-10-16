@@ -1112,7 +1112,8 @@ logoutBtn.addEventListener("click", async () => {
         showToast(error.message);
     }
 });
-/* Search food */
+
+/* Search food - Animated placeholder */
 
 if (foodSearchInput) {
     const searchPhrases = [
@@ -1128,30 +1129,22 @@ if (foodSearchInput) {
     let phraseIndex = 0;
     let characterIndex = 0;
     let isDeleting = false;
-    let typingTimer;
 
     function animatePlaceholder() {
-        // Stop animation while the user is searching
         if (
             document.activeElement === foodSearchInput ||
             foodSearchInput.value.length > 0
         ) {
-            typingTimer = setTimeout(animatePlaceholder, 300);
+            setTimeout(animatePlaceholder, 300);
             return;
         }
 
         const phrase = searchPhrases[phraseIndex];
 
-        if (isDeleting) {
-            characterIndex--;
-        } else {
-            characterIndex++;
-        }
+        characterIndex += isDeleting ? -1 : 1;
 
-        foodSearchInput.placeholder = phrase.substring(
-            0,
-            characterIndex
-        );
+        foodSearchInput.placeholder =
+            phrase.substring(0, characterIndex);
 
         let delay = isDeleting ? 40 : 85;
 
@@ -1160,24 +1153,38 @@ if (foodSearchInput) {
             delay = 1200;
         } else if (isDeleting && characterIndex === 0) {
             isDeleting = false;
-            phraseIndex = (phraseIndex + 1) % searchPhrases.length;
+            phraseIndex =
+                (phraseIndex + 1) % searchPhrases.length;
             delay = 300;
         }
 
-        typingTimer = setTimeout(animatePlaceholder, delay);
+        setTimeout(animatePlaceholder, delay);
     }
 
     animatePlaceholder();
 
-    foodSearchInput.addEventListener("input", () => {
-        clearFoodSearch.style.display =
-            foodSearchInput.value ? "block" : "none";
-    });
+    if (clearFoodSearch) {
+        foodSearchInput.addEventListener("input", () => {
+            clearFoodSearch.style.display =
+                foodSearchInput.value ? "block" : "none";
+        });
 
-    clearFoodSearch.addEventListener("click", () => {
-        foodSearchInput.value = "";
-        clearFoodSearch.style.display = "none";
-        foodSearchInput.focus();
+        clearFoodSearch.addEventListener("click", () => {
+            foodSearchInput.value = "";
+            clearFoodSearch.style.display = "none";
+            foodSearchInput.focus();
+            displayFoods();
+        });
+    }
+
+    foodSearchInput.addEventListener("input", displayFoods);
+
+    foodSearchInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            document.getElementById("menu").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
     });
 }
 

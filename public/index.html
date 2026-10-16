@@ -20,7 +20,24 @@
             <a href="#home">Home</a>
             <a href="#menu">Food Menu</a>
         </nav>
+<!--  FOOD SEARCH -->
+<div class="food-search-box navbar-search">
+    <span aria-hidden="true">🔍</span>
 
+    <input
+        type="text"
+        id="foodSearch"
+        placeholder="Search for tea..."
+        autocomplete="off"
+        aria-label="Search food items"
+    >
+
+    <button
+        type="button"
+        id="clear-food-search"
+        aria-label="Clear search"
+    >×</button>
+</div>
         <a class="cart-link" href="#cart">
             🛒 Cart (<span id="cart-count">0</span>)
         </a>
@@ -37,6 +54,7 @@
         <!-- HERO SECTION -->
         <section class="hero" id="home">
             <div class="hero-content">
+
                 <p class="eyebrow">YOUR CAMPUS, YOUR FLAVOURS</p>
 
                 <h1>Good food.<br>Great college days.</h1>
@@ -75,23 +93,6 @@
                     Fresh picks, campus prices
                 </span>
             </div>
-
-<!-- FOOD SEARCH -->
-<div class="food-search-box">
-    <span aria-hidden="true">🔍</span>
-    <input
-        type="text"
-        id="foodSearch"
-        placeholder="Search for tea..."
-        autocomplete="off"
-        aria-label="Search food items"
-    >
-    <button
-        type="button"
-        id="clear-food-search"
-        aria-label="Clear search"
-    >×</button>
-</div>
 
             <!-- CATEGORY BUTTONS -->
             <div class="category-buttons" id="menu-categories">
