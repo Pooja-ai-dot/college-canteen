@@ -898,3 +898,82 @@ app.listen(PORT, "0.0.0.0", () => {
         "College Canteen server running on port " + PORT
     );
 });
+// Submit a rating
+app.post("/api/foods/:foodId/ratings", async (req, res) => {
+    try {
+        const foodId = Number(req.params.foodId);
+        const rating = Number(req.body.rating);
+
+        if (!Number.isInteger(foodId) || foodId < 1) {
+            return res.status(400).json({
+                message: "Invalid food ID"
+            });
+        }
+
+        if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+            return res.status(400).json({
+                message: "Rating must be between 1 and 5"
+            });
+        }
+
+        // Confirm this table and ID column match your menu schema.
+        const [foods] = await db.execute(
+            "SELECT id FROM menu_items WHERE id = ?",
+            [foodId]
+        );
+
+        if (foods.length === 0) {
+            return res.status(404).json({
+                message: "Food item not found"
+            });
+        }
+
+        await db.execute(
+            `INSERT INTO food_ratings (food_id, rating)
+             VALUES (?, ?)`,
+            [foodId, rating]
+        );
+
+        res.status(201).json({
+            message: "Rating submitted successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Could not save rating"
+        });
+    }
+});
+
+
+// Get average rating for each food item
+app.get("/api/foods/:foodId/ratings", async (req, res) => {
+    try {
+        const foodId = Number(req.params.foodId);
+
+        if (!Number.isInteger(foodId) || foodId < 1) {
+            return res.status(400).json({
+                message: "Invalid food ID"
+            });
+        }
+
+        const [rows] = await db.execute(
+            `SELECT
+                ROUND(AVG(rating), 1) AS averageRating,
+                COUNT(*) AS totalRatings
+             FROM food_ratings
+             WHERE food_id = ?`,
+            [foodId]
+        );
+
+        res.json({
+            averageRating: Number(rows[0].averageRating) || 0,
+            totalRatings: Number(rows[0].totalRatings) || 0
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Could not load ratings"
+        });
+    }
+});
