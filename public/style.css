@@ -1287,3 +1287,233 @@ footer p {
         flex-basis: 100%;
     }
 }
+
+/* =====================================
+   MOBILE RESPONSIVE - CAMPUS BITES
+===================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 14px 5%;
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.navbar-search {
+    width: 280px;
+    max-width: 100%;
+    min-width: 0;
+}
+
+/* HERO SECTION */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 40px 5%;
+}
+
+.hero-content {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.hero h1 {
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+/* FOOD GRID */
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.food-card {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.food-card img {
+    display: block;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.food-info {
+    min-width: 0;
+    padding: 14px;
+}
+
+.food-info h3 {
+    overflow-wrap: anywhere;
+}
+
+/* CATEGORY BUTTONS */
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+    .food-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hero {
+        gap: 16px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .navbar {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .navbar .logo {
+        max-width: 65%;
+        font-size: 19px;
+    }
+
+    .navbar .college-logo {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+    }
+
+    .navbar nav {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        gap: 24px;
+    }
+
+    .navbar-search {
+        order: 3;
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .cart-link {
+        font-size: 13px;
+    }
+
+    .hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 35px 20px;
+    }
+
+    .hero-art {
+        align-self: center;
+        max-width: 100%;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .menu-section,
+    .cart-section {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .food-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .food-card {
+        width: 100%;
+    }
+
+    .food-card img {
+        height: 210px;
+    }
+
+    .category-buttons {
+        gap: 8px;
+    }
+
+    .category-btn {
+        max-width: 100%;
+        font-size: 13px;
+    }
+
+    .food-bottom {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .pickup-time-section,
+    .payment-section {
+        max-width: 100%;
+    }
+
+    .pickup-time-section input,
+    .payment-section select {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .primary-btn {
+        max-width: 100%;
+    }
+
+    .auth-box,
+    .order-modal-content {
+        width: calc(100% - 32px);
+        max-width: 420px;
+        margin: 16px auto;
+    }
+
+    .profile-drawer {
+        width: min(320px, 90vw);
+        max-width: 90vw;
+    }
+}
