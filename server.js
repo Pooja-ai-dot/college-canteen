@@ -657,6 +657,105 @@ app.get("/api/admin/summary", requireAdmin, async (req, res) => {
     }
 });
 
+/* ================= ADMIN ANALYTICS API ================= */
+
+app.get("/api/admin/analytics", requireAdmin, async (req, res) => {
+    try {
+        const connection = db.promise();
+        const period = req.query.period || "daily";
+
+        if (!["daily", "monthly", "overall"].includes(period)) {
+            return res.status(400).json({
+                message: "Invalid analytics period"
+            });
+        }
+
+        let dateCondition = "";
+
+        if (period === "daily") {
+            dateCondition = "DATE(o.order_date) = CURDATE()";
+        } else if (period === "monthly") {
+            dateCondition =
+                "YEAR(o.order_date) = YEAR(CURDATE()) AND MONTH(o.order_date) = MONTH(CURDATE())";
+        }
+
+        // 1. Order Statistics
+        let orderQuery = `
+            SELECT
+                COUNT(*) AS total_orders,
+                COALESCE(SUM(o.total_amount), 0) AS total_order_value,
+                COALESCE(SUM(o.order_status = 'Completed'), 0) AS completed_orders,
+                COALESCE(SUM(o.order_status IN ('Received', 'Preparing', 'Ready')), 0) AS pending_orders,
+                COALESCE(SUM(o.order_status = 'Cancelled'), 0) AS cancelled_orders
+            FROM orders o
+        `;
+
+        if (period !== "overall") {
+            orderQuery += ` WHERE ${dateCondition}`;
+        }
+
+        const [[orderStats]] = await connection.query(orderQuery);
+
+        // 2. Paid Revenue
+        let revenueQuery = `
+            SELECT COALESCE(SUM(t.amount), 0) AS total_revenue
+            FROM transactions t
+            INNER JOIN orders o ON t.order_id = o.order_id
+            WHERE t.payment_status = 'Paid'
+        `;
+
+        if (period !== "overall") {
+            revenueQuery += ` AND ${dateCondition}`;
+        }
+
+        const [[revenueStats]] = await connection.query(revenueQuery);
+
+        // 3. Total Customers
+        const [[customerStats]] = await connection.query(`
+            SELECT COUNT(*) AS total_customers
+            FROM users
+        `);
+
+        // 4. Top Selling Foods
+        let foodQuery = `
+            SELECT
+                oi.item_name,
+                COALESCE(SUM(oi.quantity), 0) AS total_quantity,
+                COALESCE(SUM(oi.item_total), 0) AS total_sales
+            FROM order_items oi
+            INNER JOIN orders o ON oi.order_id = o.order_id
+        `;
+
+        if (period !== "overall") {
+            foodQuery += ` WHERE ${dateCondition}`;
+        }
+
+        foodQuery += `
+            GROUP BY oi.item_name
+            ORDER BY total_quantity DESC
+            LIMIT 5
+        `;
+
+        const [topFoods] = await connection.query(foodQuery);
+
+        // 5. Send Analytics Data
+        res.json({
+            period: period,
+            orders: orderStats,
+            revenue: revenueStats,
+            customers: customerStats,
+            topFoods: topFoods
+        });
+
+    } catch (error) {
+        console.error("Analytics API Error:", error);
+
+        res.status(500).json({
+            message: "Failed to fetch analytics data"
+        });
+    }
+});
+
 /* View all orders */
 app.get("/api/admin/orders", requireAdmin, async (req, res) => {
     try {

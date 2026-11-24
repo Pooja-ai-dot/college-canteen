@@ -28,15 +28,132 @@
             <button data-section="customers">Customers</button>
         </nav>
 
-        <section id="overview" class="section">
-            <h2>Dashboard Overview</h2>
-            <div class="stats">
-                <div class="stat">Total Orders<strong id="total-orders">—</strong></div>
-                <div class="stat">Menu Items<strong id="total-foods">—</strong></div>
-                <div class="stat">Customers<strong id="total-customers">—</strong></div>
-                <div class="stat">Payments Marked Paid<strong id="total-payments">—</strong></div>
+       
+<section id="overview" class="section">
+    <h2>Admin Analytics Dashboard</h2>
+
+    <!-- Analytics Tabs -->
+    <div class="analytics-tabs">
+        <button class="analytics-tab active" data-analytics="daily">Daily</button>
+        <button class="analytics-tab" data-analytics="monthly">Monthly</button>
+        <button class="analytics-tab" data-analytics="overall">Overall</button>
+    </div>
+
+    <!-- DAILY DATA -->
+    <div id="daily-analytics" class="analytics-panel">
+        <h3>Daily Performance</h3>
+
+        <label for="daily-date">Select Date</label>
+        <input type="date" id="daily-date">
+
+        <div class="stats">
+            <div class="stat">Revenue Today
+                <strong id="daily-revenue">₹0</strong>
             </div>
-        </section>
+
+            <div class="stat">Total Orders
+                <strong id="daily-orders">0</strong>
+            </div>
+
+            <div class="stat">Completed Orders
+                <strong id="daily-completed">0</strong>
+            </div>
+
+            <div class="stat">Pending Orders
+                <strong id="daily-pending">0</strong>
+            </div>
+
+            <div class="stat">Cancelled Orders
+                <strong id="daily-cancelled">0</strong>
+            </div>
+
+            <div class="stat">Average Order Value
+                <strong id="daily-average">₹0</strong>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h3>Today's Best Seller</h3>
+            <p id="daily-best-seller">No data available</p>
+        </div>
+    </div>
+
+    <!-- MONTHLY DATA -->
+    <div id="monthly-analytics" class="analytics-panel hidden">
+        <h3>Monthly Performance</h3>
+
+        <label for="monthly-month">Select Month</label>
+        <input type="month" id="monthly-month">
+
+        <div class="stats">
+            <div class="stat">Monthly Revenue
+                <strong id="monthly-revenue">₹0</strong>
+            </div>
+
+            <div class="stat">Total Orders
+                <strong id="monthly-orders">0</strong>
+            </div>
+
+            <div class="stat">Completed Orders
+                <strong id="monthly-completed">0</strong>
+            </div>
+
+            <div class="stat">Cancelled Orders
+                <strong id="monthly-cancelled">0</strong>
+            </div>
+
+            <div class="stat">Average Order Value
+                <strong id="monthly-average">₹0</strong>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h3>Monthly Best Seller</h3>
+            <p id="monthly-best-seller">No data available</p>
+        </div>
+    </div>
+
+    <!-- OVERALL DATA -->
+    <div id="overall-analytics" class="analytics-panel hidden">
+        <h3>Overall Performance</h3>
+
+        <div class="stats">
+            <div class="stat">Lifetime Revenue
+                <strong id="overall-revenue">₹0</strong>
+            </div>
+
+            <div class="stat">Total Orders
+                <strong id="overall-orders">0</strong>
+            </div>
+
+            <div class="stat">Completed Orders
+                <strong id="overall-completed">0</strong>
+            </div>
+
+            <div class="stat">Cancelled Orders
+                <strong id="overall-cancelled">0</strong>
+            </div>
+
+            <div class="stat">Registered Customers
+                <strong id="overall-customers">0</strong>
+            </div>
+
+            <div class="stat">Total Menu Items
+                <strong id="overall-foods">0</strong>
+            </div>
+
+            <div class="stat">Average Order Value
+                <strong id="overall-average">₹0</strong>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h3>All-Time Best Seller</h3>
+            <p id="overall-best-seller">No data available</p>
+        </div>
+    </div>
+</section>
+
 
         <section id="orders" class="section hidden">
             <h2>All Orders</h2>

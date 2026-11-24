@@ -138,7 +138,32 @@ function setRows(id, rows) {
 
     rows.forEach(row => body.appendChild(row));
 }
+// ANALYTICS TAB SWITCHING
+const analyticsTabs = document.querySelectorAll(".analytics-tab");
+const analyticsPanels = document.querySelectorAll(".analytics-panel");
 
+analyticsTabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+
+        analyticsTabs.forEach(button => {
+            button.classList.remove("active");
+        });
+
+        analyticsPanels.forEach(panel => {
+            panel.classList.add("hidden");
+        });
+
+        tab.classList.add("active");
+
+        const selectedPanel = document.getElementById(
+            tab.dataset.analytics
+        );
+
+        if (selectedPanel) {
+            selectedPanel.classList.remove("hidden");
+        }
+    });
+});
 
 // DASHBOARD SUMMARY
 async function loadSummary() {

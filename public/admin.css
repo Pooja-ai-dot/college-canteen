@@ -98,3 +98,73 @@ button:active,
     background-color: #a93816 !important;
     transform: translateY(0);
 }
+
+/* Analytics Dashboard */
+.analytics-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.analytics-tab {
+    padding: 10px 22px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.analytics-tab.active {
+    background: #f5a623;
+    color: #222;
+    border-color: #f5a623;
+}
+
+.analytics-panel {
+    margin-top: 20px;
+}
+
+.analytics-panel .stats {
+    margin: 20px 0;
+}
+
+.analytics-panel .stat strong {
+    display: block;
+    margin-top: 10px;
+    font-size: 24px;
+}
+
+.analytics-panel input[type="date"],
+.analytics-panel input[type="month"] {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin: 10px 0 20px;
+    max-width: 100%;
+}
+
+.analytics-panel .panel {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.analytics-panel h3 {
+    margin-bottom: 15px;
+}
+
+@media (max-width: 600px) {
+    .analytics-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .analytics-tab {
+        padding: 10px 8px;
+    }
+
+    .analytics-panel .stat strong {
+        font-size: 20px;
+    }
+}
