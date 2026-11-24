@@ -88,7 +88,10 @@ function normalizeCategory(value) {
 
 function getFoodImage(food) {
     const name = getFoodName(food).toLowerCase();
-
+// First priority: image uploaded from Admin Panel
+if (food.image) {
+    return food.image;
+}
     const imageMap = [
         ["kulhad tea", "kulhadtea.jpg"],
         ["regular hot coffee", "regularhotcoffee.jpg"],

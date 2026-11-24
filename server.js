@@ -298,7 +298,7 @@ app.post("/api/auth/logout", (req, res) => {
 // Get food menu
 app.get("/api/foods", (req, res) => {
     db.query(
-        "SELECT item_name, category, price FROM menu_items",
+        "SELECT item_name, category, price, image FROM menu_items",
         (err, results) => {
             if (err) {
                 console.error("Menu error:", err.message);
