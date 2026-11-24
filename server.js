@@ -26,7 +26,7 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000
     }
 }));
-
+const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
 
 
