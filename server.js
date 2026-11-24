@@ -3,6 +3,7 @@ const mysql = require("mysql2");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 require("dotenv").config();
+const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 
@@ -26,7 +27,6 @@ app.use(session({
     }
 }));
 
-const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
 
 
