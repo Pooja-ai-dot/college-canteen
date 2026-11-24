@@ -1,11 +1,12 @@
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 const express = require("express");
 const mysql = require("mysql2");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 require("dotenv").config();
-const path = require("path");
-const multer = require("multer");
-const fs = require("fs");
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -736,82 +737,142 @@ app.get("/api/admin/menu", requireAdmin, async (req, res) => {
 });
 
 /* Add menu item */
-app.post("/api/admin/menu", requireAdmin, upload.single("image"), async (req, res) => {
-    const itemName = String(req.body.item_name || "").trim();
-    const category = String(req.body.category || "").trim();
-    const price = Number(req.body.price);
 
-    const image = req.file ? `/uploads/${req.file.filename}` : null;
+/* Add menu item */
+app.post(
+    "/api/admin/menu",
+    requireAdmin,
+    upload.single("image"),
+    async (req, res) => {
 
-    if (!itemName || !category ||
-        itemName.length > 150 || category.length > 100 ||
-        !Number.isFinite(price) || price < 0 || price > 1000000) {
-        return res.status(400).json({
-            message: "Enter a valid item name, category and price."
-        });
-    }
+        const itemName = String(req.body.item_name || "").trim();
+        const category = String(req.body.category || "").trim();
+        const price = Number(req.body.price);
 
-    try {
-        await db.promise().execute(
-            `INSERT INTO menu_items (item_name, category, price, image)
-             VALUES (?, ?, ?, ?)`,
-            [itemName, category, price, image]
-        );
+        const image = req.file
+            ? `/uploads/${req.file.filename}`
+            : null;
 
-        res.status(201).json({
-            message: "Food item added successfully."
-        });
-    } catch (error) {
-        if (req.file) {
-            fs.unlink(req.file.path, () => {});
-        }
+        if (
+            !itemName ||
+            !category ||
+            itemName.length > 150 ||
+            category.length > 100 ||
+            !Number.isFinite(price) ||
+            price < 0 ||
+            price > 1000000
+        ) {
+            if (req.file) {
+                fs.unlink(req.file.path, () => {});
+            }
 
-        console.error("Add food error:", error.message);
-
-        res.status(error.code === "ER_DUP_ENTRY" ? 409 : 500).json({
-            message: error.code === "ER_DUP_ENTRY"
-                ? "This item already exists."
-                : "Could not add food item."
-        });
-    }
-});
-/* Edit menu item; old name identifies the item */
-app.put("/api/admin/menu/:oldName", requireAdmin, async (req, res) => {
-    const oldName = String(req.params.oldName || "").trim();
-    const itemName = String(req.body.item_name || "").trim();
-    const category = String(req.body.category || "").trim();
-    const price = Number(req.body.price);
-
-    if (!oldName || !itemName || !category ||
-        itemName.length > 150 || category.length > 100 ||
-        !Number.isFinite(price) || price < 0 || price > 1000000) {
-        return res.status(400).json({
-            message: "Enter valid food details."
-        });
-    }
-
-    try {
-        const [result] = await db.promise().execute(
-            `UPDATE menu_items
-             SET item_name = ?, category = ?, price = ?
-             WHERE item_name = ?`,
-            [itemName, category, price, oldName]
-        );
-
-        if (!result.affectedRows) {
-            return res.status(404).json({
-                message: "Food item not found."
+            return res.status(400).json({
+                message: "Enter valid food details."
             });
         }
 
-        res.json({ message: "Food item updated." });
-    } catch (error) {
-        console.error("Edit food error:", error.message);
-        res.status(500).json({
-            message: "Could not update food item."
-        });
+        try {
+            await db.promise().execute(
+                `INSERT INTO menu_items
+                (item_name, category, price, image)
+                VALUES (?, ?, ?, ?)`,
+                [itemName, category, price, image]
+            );
+
+            return res.status(201).json({
+                message: "Food item added successfully.",
+                image: image
+            });
+
+        } catch (error) {
+
+            if (req.file) {
+                fs.unlink(req.file.path, () => {});
+            }
+
+            console.error("Add food error:", error.message);
+
+            return res.status(
+                error.code === "ER_DUP_ENTRY" ? 409 : 500
+            ).json({
+                message: error.code === "ER_DUP_ENTRY"
+                    ? "This food item already exists."
+                    : "Could not add food item."
+            });
+        }
     }
-});
+);
+
+/* Edit menu item; old name identifies the item */
+
+/* Edit menu item */
+app.put(
+  "/api/admin/menu/:oldName",
+  requireAdmin,
+  upload.single("image"),
+  async (req, res) => {
+    const oldName = req.params.oldName;
+    const itemName = String(req.body.item_name || "").trim();
+    const category = String(req.body.category || "").trim();
+    const price = Number(req.body.price);
+
+    if (
+      !itemName ||
+      !category ||
+      !Number.isFinite(price) ||
+      price < 0 ||
+      price > 1000000
+    ) {
+      if (req.file) fs.unlink(req.file.path, () => {});
+      return res.status(400).json({
+        message: "Enter valid food details."
+      });
+    }
+
+    try {
+      const [existing] = await db.promise().execute(
+        "SELECT image FROM menu_items WHERE item_name = ?",
+        [oldName]
+      );
+
+      if (existing.length === 0) {
+        if (req.file) fs.unlink(req.file.path, () => {});
+        return res.status(404).json({
+          message: "Food item not found."
+        });
+      }
+
+      const image = req.file
+        ? `/uploads/${req.file.filename}`
+        : existing[0].image;
+
+      await db.promise().execute(
+        `UPDATE menu_items
+         SET item_name = ?, category = ?, price = ?, image = ?
+         WHERE item_name = ?`,
+        [itemName, category, price, image, oldName]
+      );
+
+      return res.json({
+        message: "Food item updated successfully.",
+        image: image
+      });
+
+    } catch (error) {
+      if (req.file) fs.unlink(req.file.path, () => {});
+      console.error("Edit food error:", error.message);
+
+      return res.status(
+        error.code === "ER_DUP_ENTRY" ? 409 : 500
+      ).json({
+        message: error.code === "ER_DUP_ENTRY"
+          ? "This food item already exists."
+          : "Could not update food item."
+      });
+    }
+  }
+);
+
 
 /* Delete menu item */
 app.delete("/api/admin/menu/:name", requireAdmin, async (req, res) => {
