@@ -82,6 +82,22 @@ foodImage.addEventListener("change", function () {
         imagePreview.style.display = "block";
     }
 });
+const formData = new FormData();
+
+formData.append("item_name", itemName);
+formData.append("category", category);
+formData.append("price", price);
+
+const imageFile = document.getElementById("foodImage").files[0];
+
+if (imageFile) {
+    formData.append("image", imageFile);
+}
+
+const response = await fetch("/api/admin/menu", {
+    method: "POST",
+    body: formData
+});
 function setRows(id, rows) {
     const body = document.getElementById(id);
     body.replaceChildren();

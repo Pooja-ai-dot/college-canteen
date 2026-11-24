@@ -3,7 +3,8 @@ const mysql = require("mysql2");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 require("dotenv").config();
-
+const multer = require("multer");
+const fs = require("fs");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -53,7 +54,24 @@ db.connect((err) => {
 
     console.log("MySQL database connected successfully!");
 });
+const uploadDir = path.join(__dirname, "uploads");
 
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+app.use("/uploads", express.static(uploadDir));
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
 // Test route
 app.get("/test-db", (req, res) => {
     db.query("SHOW TABLES", (err, results) => {
@@ -719,10 +737,12 @@ app.get("/api/admin/menu", requireAdmin, async (req, res) => {
 });
 
 /* Add menu item */
-app.post("/api/admin/menu", requireAdmin, async (req, res) => {
+app.post("/api/admin/menu", requireAdmin, upload.single("image"), async (req, res) => {
     const itemName = String(req.body.item_name || "").trim();
     const category = String(req.body.category || "").trim();
     const price = Number(req.body.price);
+
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
 
     if (!itemName || !category ||
         itemName.length > 150 || category.length > 100 ||
@@ -734,14 +754,21 @@ app.post("/api/admin/menu", requireAdmin, async (req, res) => {
 
     try {
         await db.promise().execute(
-            `INSERT INTO menu_items (item_name, category, price)
-             VALUES (?, ?, ?)`,
-            [itemName, category, price]
+            `INSERT INTO menu_items (item_name, category, price, image)
+             VALUES (?, ?, ?, ?)`,
+            [itemName, category, price, image]
         );
 
-        res.status(201).json({ message: "Food item added." });
+        res.status(201).json({
+            message: "Food item added successfully."
+        });
     } catch (error) {
+        if (req.file) {
+            fs.unlink(req.file.path, () => {});
+        }
+
         console.error("Add food error:", error.message);
+
         res.status(error.code === "ER_DUP_ENTRY" ? 409 : 500).json({
             message: error.code === "ER_DUP_ENTRY"
                 ? "This item already exists."
@@ -749,7 +776,6 @@ app.post("/api/admin/menu", requireAdmin, async (req, res) => {
         });
     }
 });
-
 /* Edit menu item; old name identifies the item */
 app.put("/api/admin/menu/:oldName", requireAdmin, async (req, res) => {
     const oldName = String(req.params.oldName || "").trim();
