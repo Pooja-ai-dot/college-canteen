@@ -165,21 +165,37 @@ analyticsTabs.forEach(tab => {
     });
 });
 
-// DASHBOARD SUMMARY
+
+ // DASHBOARD SUMMARY
 async function loadSummary() {
-    const data = await api("/api/admin/summary");
+    try {
+        const data = await api("/api/admin/summary");
 
-    document.getElementById("total-orders").textContent =
-        data.orders.total_orders;
+        const totalOrders = document.getElementById("total-orders");
+        const totalFoods = document.getElementById("total-foods");
+        const totalCustomers = document.getElementById("total-customers");
+        const totalPayments = document.getElementById("total-payments");
 
-    document.getElementById("total-foods").textContent =
-        data.foods.total_foods;
+        if (totalOrders) {
+            totalOrders.textContent = data.orders?.total_orders ?? 0;
+        }
 
-    document.getElementById("total-customers").textContent =
-        data.customers.total_customers;
+        if (totalFoods) {
+            totalFoods.textContent = data.foods?.total_foods ?? 0;
+        }
 
-    document.getElementById("total-payments").textContent =
-        money(data.payments.total_payments);
+        if (totalCustomers) {
+            totalCustomers.textContent = data.customers?.total_customers ?? 0;
+        }
+
+        if (totalPayments) {
+            totalPayments.textContent = money(data.payments?.total_payments);
+        }
+
+    } catch (error) {
+        showMessage(error.message);
+        throw error;
+    }
 }
 
 
