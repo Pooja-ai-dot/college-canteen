@@ -71,7 +71,17 @@ function makeSelect(values, currentValue) {
 function money(value) {
     return "₹" + Number(value || 0).toFixed(2);
 }
+const foodImage = document.getElementById("foodImage");
+const imagePreview = document.getElementById("imagePreview");
 
+foodImage.addEventListener("change", function () {
+    const file = this.files[0];
+
+    if (file) {
+        imagePreview.src = URL.createObjectURL(file);
+        imagePreview.style.display = "block";
+    }
+});
 function setRows(id, rows) {
     const body = document.getElementById(id);
     body.replaceChildren();
