@@ -29,6 +29,9 @@
         <nav>
             <a href="#home">Home</a>
             <a href="#menu">Food Menu</a>
+            <button id="installAppBtn" style="display: none;">
+                📲 Install Campus Bites
+            </button>
         </nav>
         <!--  FOOD SEARCH -->
         <div class="food-search-box navbar-search">
@@ -312,15 +315,73 @@
 
     </div>
     <script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js")
-      .then(() => console.log("Campus Bites app support enabled"))
-      .catch(error => console.error("App setup failed:", error));
-  });
-}
-</script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("/service-worker.js")
+                    .then(() => console.log("Campus Bites app support enabled"))
+                    .catch(error => console.error("App setup failed:", error));
+            });
+        }
+    </script>
+<script>
+let deferredPrompt;
+const installBtn = document.getElementById("installAppBtn");
 
+// Detect iPhone/iPad
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+// Detect if app is already installed
+const isStandalone =
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.navigator.standalone === true;
+
+// Show install button if not already installed
+if (!isStandalone) {
+  installBtn.style.display = "block";
+}
+
+installBtn.addEventListener("click", async () => {
+
+  // iPhone installation instructions
+  if (isIOS) {
+    alert(
+      "To install Campus Bites:\n\n" +
+      "1. Open this website in Safari.\n" +
+      "2. Tap the Share button.\n" +
+      "3. Select 'Add to Home Screen'.\n" +
+      "4. Tap Add."
+    );
+    return;
+  }
+
+  // Android installation
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+
+    const result = await deferredPrompt.userChoice;
+
+    if (result.outcome === "accepted") {
+      installBtn.style.display = "none";
+    }
+
+    deferredPrompt = null;
+  } else {
+    alert("To install Campus Bites, open this website in Chrome and check the browser menu for Install App or Add to Home Screen.");
+  }
+});
+
+// Detect Android installation availability
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredPrompt = event;
+  installBtn.style.display = "block";
+});
+
+// Hide button if app gets installed
+window.addEventListener("appinstalled", () => {
+  installBtn.style.display = "none";
+});
+</script>
     <!-- JAVASCRIPT -->
     <script src="script.js"></script>
 
