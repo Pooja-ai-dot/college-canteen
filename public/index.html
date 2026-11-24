@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Bites | College Canteen</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.json">
+
+    <meta name="theme-color" content="#f5a623">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-title" content="Campus Bites">
+
 </head>
 
 <body>
@@ -20,24 +30,15 @@
             <a href="#home">Home</a>
             <a href="#menu">Food Menu</a>
         </nav>
-<!--  FOOD SEARCH -->
-<div class="food-search-box navbar-search">
-    <span aria-hidden="true">🔍</span>
+        <!--  FOOD SEARCH -->
+        <div class="food-search-box navbar-search">
+            <span aria-hidden="true">🔍</span>
 
-    <input
-        type="text"
-        id="foodSearch"
-        placeholder="Search for tea..."
-        autocomplete="off"
-        aria-label="Search food items"
-    >
+            <input type="text" id="foodSearch" placeholder="Search for tea..." autocomplete="off"
+                aria-label="Search food items">
 
-    <button
-        type="button"
-        id="clear-food-search"
-        aria-label="Clear search"
-    >×</button>
-</div>
+            <button type="button" id="clear-food-search" aria-label="Clear search">×</button>
+        </div>
         <a class="cart-link" href="#cart">
             🛒 Cart (<span id="cart-count">0</span>)
         </a>
@@ -310,6 +311,15 @@
         </button>
 
     </div>
+    <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("Campus Bites app support enabled"))
+      .catch(error => console.error("App setup failed:", error));
+  });
+}
+</script>
 
     <!-- JAVASCRIPT -->
     <script src="script.js"></script>
