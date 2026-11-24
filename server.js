@@ -892,12 +892,6 @@ app.get("/api/admin/customers", requireAdmin, async (req, res) => {
         });
     }
 });
-// Start server
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(
-        "College Canteen server running on port " + PORT
-    );
-});
 // Submit a rating
 app.post("/api/foods/:foodId/ratings", async (req, res) => {
     try {
@@ -976,4 +970,10 @@ app.get("/api/foods/:foodId/ratings", async (req, res) => {
             message: "Could not load ratings"
         });
     }
+});
+// Start server
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(
+        "College Canteen server running on port " + PORT
+    );
 });
